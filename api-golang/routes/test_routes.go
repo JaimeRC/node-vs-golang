@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func SetBooksRoutes(r *mux.Router) {
+func SetTestRoutes(r *mux.Router) {
 
 	subRouter := r.PathPrefix("/api").Subrouter()
 

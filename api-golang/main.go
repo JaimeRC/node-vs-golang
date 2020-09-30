@@ -15,7 +15,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// Add Routes
-	routes.SetBooksRoutes(r)
+	routes.SetTestRoutes(r)
 	routes.SetHealthCheckRoutes(r)
 
 	// Create Server
