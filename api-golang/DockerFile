@@ -1,5 +1,5 @@
 # Start from golang base image
-FROM golang:latest
+FROM golang:alpine
 
 # Set the current working directory inside the container
 WORKDIR /app
@@ -15,8 +15,6 @@ COPY . .
 
 # Build the Go app
 RUN go build -o main .
-
-EXPOSE 8080 8080
 
 CMD ["/app/main"]
 
