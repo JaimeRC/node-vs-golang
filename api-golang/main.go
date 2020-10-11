@@ -18,6 +18,9 @@ func main() {
 	routes.SetTestRoutes(r)
 	routes.SetHealthCheckRoutes(r)
 
+	// Add Swagger
+	routes.SetSwaggerRoutes(r)
+
 	// Create Server
 	srv := http.Server{
 		Addr:    ":8080",

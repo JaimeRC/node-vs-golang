@@ -8,4 +8,10 @@ services:
       dockerfile: DockerFile
     ports:
       - 8080:8080
-
+  api_node:
+    container_name: apinode
+    build:
+      context: api-node
+      dockerfile: Dockerfile
+    ports:
+      - 7070:7070
