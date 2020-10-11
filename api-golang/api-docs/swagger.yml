@@ -1,0 +1,167 @@
+openapi: 3.0.1
+
+info:
+  title: Test Golang API
+  version: 1.0
+
+servers:
+  - url: http://0.0.0.0:8080
+
+tags:
+  - name: Health Check
+  - name: Test
+
+paths:
+  /health_check:
+    get:
+      tags:
+        - Health Check
+      summary: Check Server is running
+      parameters:
+        - $ref: '#/components/parameters/CommonRequestHeaderContent'
+      responses:
+        200:
+          description: Sucessful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+
+  /api/test:
+    get:
+      tags:
+        - Test
+      summary: Get All Test info
+      parameters:
+        - $ref: '#/components/parameters/CommonRequestHeaderContent'
+      responses:
+        200:
+          description: Sucessful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+    post:
+      tags:
+        - Test
+      summary: Create Test Info
+      parameters:
+        - $ref: '#/components/parameters/CommonRequestHeaderContent'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                code:
+                  type: string
+      responses:
+        200:
+          description: Sucessful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+  /api/test/{id}:
+    get:
+      tags:
+        - Test
+      summary: Get Test Info by Id
+      parameters:
+        - $ref: '#/components/parameters/CommonRequestHeaderContent'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Sucessful response
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/Test'
+    put:
+      tags:
+        - Test
+      summary: Update Test Info by Id
+      parameters:
+        - $ref: '#/components/parameters/CommonRequestHeaderContent'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                code:
+                  type: string
+      responses:
+        200:
+          description: Sucessful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+    delete:
+      tags:
+        - Test
+      summary: Delete Test by Id
+      parameters:
+        - $ref: '#/components/parameters/CommonRequestHeaderContent'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Sucessful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+components:
+  parameters:
+    CommonRequestHeaderContent:
+      name: Content-Type
+      in: header
+      description: Defines request format.
+      required: true
+      schema:
+        type: string
+        enum: [application/json]
+  schemas:
+    Test:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        code:
+          type: string
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+

@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  api_golang:
+    container_name: apigolang
+    build:
+      context: api-golang
+      dockerfile: DockerFile
+    ports:
+      - 8080:8080
+
