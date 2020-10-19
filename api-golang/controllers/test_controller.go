@@ -22,13 +22,14 @@ func GetTests(w http.ResponseWriter, r *http.Request) {
 func GetTest(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r) // Gets params
-	// Loop through tests and find one with the id from the params
+	// Loop through tests and find one with the code from the params
 	for _, item := range tests {
-		if item.ID == params["id"] {
+		if item.Code == params["code"] {
 			json.NewEncoder(w).Encode(item)
 			return
 		}
 	}
+	w.WriteHeader(http.StatusNoContent)
 	json.NewEncoder(w).Encode(&models.Test{})
 }
 
@@ -39,6 +40,7 @@ func CreateTest(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewDecoder(r.Body).Decode(&test)
 	test.ID = strconv.Itoa(rand.Intn(100000000)) // Mock ID - not safe
 	tests = append(tests, test)
+	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(test)
 }
 
@@ -47,11 +49,11 @@ func UpdateTest(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	for index, item := range tests {
-		if item.ID == params["id"] {
+		if item.Code == params["code"] {
 			tests = append(tests[:index], tests[index+1:]...) // Remove test
 			var test models.Test
 			_ = json.NewDecoder(r.Body).Decode(&test)
-			test.ID = params["id"]
+			test.Code = params["code"]
 			tests = append(tests, test) // Add test updated
 			json.NewEncoder(w).Encode(test)
 			return
@@ -64,7 +66,7 @@ func DeleteTest(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	for index, item := range tests {
-		if item.ID == params["id"] {
+		if item.Code == params["code"] {
 			tests = append(tests[:index], tests[index+1:]...) // Remove book
 			break
 		}
