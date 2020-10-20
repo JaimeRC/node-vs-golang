@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 // Init Tests var as a slice Test struct
@@ -50,15 +51,19 @@ func UpdateTest(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	for index, item := range tests {
 		if item.Code == params["code"] {
+			var test = tests[index]
 			tests = append(tests[:index], tests[index+1:]...) // Remove test
-			var test models.Test
-			_ = json.NewDecoder(r.Body).Decode(&test)
-			test.Code = params["code"]
+			var updateTest models.Test
+			_ = json.NewDecoder(r.Body).Decode(&updateTest)
+			test.Name = updateTest.Name
+			test.UpdatedAt = time.Now()
 			tests = append(tests, test) // Add test updated
 			json.NewEncoder(w).Encode(test)
 			return
 		}
 	}
+	w.WriteHeader(http.StatusNoContent)
+	json.NewEncoder(w).Encode(&models.Test{})
 }
 
 // Delete Test
@@ -68,8 +73,10 @@ func DeleteTest(w http.ResponseWriter, r *http.Request) {
 	for index, item := range tests {
 		if item.Code == params["code"] {
 			tests = append(tests[:index], tests[index+1:]...) // Remove book
-			break
+			json.NewEncoder(w).Encode(tests)
+			return
 		}
 	}
-	json.NewEncoder(w).Encode(tests)
+	w.WriteHeader(http.StatusNoContent)
+	json.NewEncoder(w).Encode(&models.Test{})
 }
