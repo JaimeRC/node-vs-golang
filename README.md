@@ -7,7 +7,6 @@ In this project what is tried is to compare the effectiveness of a Node and Gola
         ├─── docs                      # Documentation
         ├─── api-golang                # API Rest with Golang
         ├─── api-node                  # API Rest with NodeJS
-        ├─── docker-compose.yml        # Create containers
         └─── bench.sh                  # Script for launch test
 
 ## Requirements
