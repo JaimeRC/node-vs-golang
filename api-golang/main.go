@@ -2,6 +2,7 @@ package main
 
 import (
 	"api-golang/routes"
+	"api-golang/utils"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -24,7 +25,7 @@ func main() {
 	// Create Server
 	srv := http.Server{
 		Addr:    ":8080",
-		Handler: r,
+		Handler: utils.LogRequest(r),
 	}
 
 	log.Println("Running on port 8080")
@@ -32,3 +33,5 @@ func main() {
 	// Run Server
 	log.Println(srv.ListenAndServe())
 }
+
+

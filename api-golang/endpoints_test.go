@@ -90,7 +90,7 @@ func TestPutTest(t *testing.T){
 
 	var jsonStr = []byte(`{"name":"Changes"}`)
 
-	req, err := http.NewRequest("PUT", "/test/{code}", bytes.NewBuffer(jsonStr))
+	req, err := http.NewRequest("PUT", "/api/test/{code}", bytes.NewBuffer(jsonStr))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -114,7 +114,7 @@ func TestPutTest(t *testing.T){
 }
 
 func TestDeleteTest(t *testing.T){
-	req, err := http.NewRequest("DELETE", "/test/{code}", nil)
+	req, err := http.NewRequest("DELETE", "/api/test/{code}", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
