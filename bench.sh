@@ -7,19 +7,7 @@ declare -A test0=(
     [name]='test0'
 )
 
-# TEST 1
-declare -A test1=(
-    [requests]=1000
-    [concurrent]=100
-    [name]='test1'
-)
 
-# TEST 2
-declare -A test2=(
-    [requests]=10000
-    [concurrent]=1000
-    [name]='test1'
-)
 
 # Get configuration of the Server
 if [ "$1" = "golang" ]; then
@@ -52,7 +40,8 @@ launch_test () {
     echo -e "" >> $OUTFILE
 
     # Launch Test
-    ab -l -r -n $1 -c $2 -k -H "Accept-Encoding: gzip, deflate" -g $3.csv $URL/test >> $OUTFILE
+    ab -l -r -k -n $1 -c $2 -p ./test/post.json -H "Accept-Encoding: gzip, deflate"  -g $3.csv $URL/test >> $OUTFILE
+    ab -l -r -k -n $1 -c $2 -H "Accept-Encoding: gzip, deflate" -g $3.csv $URL/test >> $OUTFILE
 
     # Add the divider so we can read this easier
     echo -e $DIVIDER >> $OUTFILE
@@ -62,7 +51,7 @@ print_graphic () {
     echo "
         set terminal png size 600
         set output '$1.png'
-        set title '1000 requests, 100 concurrent requets'
+        set title '$2 requests, $3 concurrent requets'
         set size ratio 0.6
         set grid y
         set xlabel 'Nº Requests'
@@ -77,7 +66,7 @@ print_graphic () {
 declare -n test
 for test in ${!test@}; do
    launch_test ${test[requests]} ${test[concurrent]} "${LANGUAGE}_${test[name]}"
-   print_graphic "${LANGUAGE}_${test[name]}"
+   print_graphic "${LANGUAGE}_${test[name]}" ${test[requests]} ${test[concurrent]}
    sleep 3
 done
 
