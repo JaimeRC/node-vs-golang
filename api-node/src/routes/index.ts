@@ -7,11 +7,11 @@ const router: Router = Router()
 router.get('/health_check', getHealthCheck)
 
 // Crud
-router.get('/test', getTests)
-router.get('/test/:id', getTest)
-router.post('/test', createTest)
-router.put('/test/:id', updateTest)
-router.delete('/test/:id', deleteTest)
+router.get('/api/test', getTests)
+router.get('/api/test/:id', getTest)
+router.post('/api/test', createTest)
+router.put('/api/test/:id', updateTest)
+router.delete('/api/test/:id', deleteTest)
 
 
 export default router
