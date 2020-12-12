@@ -1,0 +1,46 @@
+config:
+  target: "http://localhost:8080"
+  http:
+    # Responses have to be sent within 10 seconds or the request will be aborted
+    timeout: 10
+
+  phases:
+    - duration: 60 # seconds
+      arrivalRate: 100 # virtual users
+
+scenarios:
+  - flow:
+      - get:
+          url: "/api/test"
+          expect:
+            - statusCode: 204
+      - post:
+          url: "/api/test"
+          json:
+            name: "test_name"
+            code: "test_code"
+          capture:
+            regexp: '[^]*'
+            as: "test"
+          expect:
+            - statusCode: 200
+      - get:
+          url: "/api/test/{{ test.id }}"
+          expect:
+            - statusCode: 200
+      - put:
+          url: "/api/test/{{ test.id }}"
+          json:
+            body: "{{ test }}"
+          expect:
+            - statusCode: 200
+      - get:
+          url: "/api/test"
+          expect:
+            - statusCode: 200
+      - delete:
+          url: "/api/test/{{ test.id }}"
+          expect:
+            - statusCode: 200
+
+
